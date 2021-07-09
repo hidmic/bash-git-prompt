@@ -326,7 +326,8 @@ function setGitPrompt() {
   update_old_git_prompt
 
   local repo=$(git rev-parse --show-toplevel 2> /dev/null)
-  if [[ ! -e "${repo}" ]] && [[ "${GIT_PROMPT_ONLY_IN_REPO-}" = 1 ]]; then
+  local noprompt=$(git config --get prompt.disabled 2>/dev/null)
+  if [[ ! -e "${repo}" ]] && [[ "${GIT_PROMPT_ONLY_IN_REPO-}" = 1 ]] || [[ "${noprompt-}" = 1 ]]; then
     # we do not permit bash-git-prompt outside git repos, so nothing to do
     PS1="${OLD_GITPROMPT}"
     return
